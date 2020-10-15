@@ -10,10 +10,13 @@ import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
-
+import java.time.Duration;
+import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
+import java.util.concurrent.TimeUnit;
 
 import android.widget.TextView;
 
@@ -24,7 +27,7 @@ import androidx.appcompat.app.AppCompatActivity;
 @RequiresApi(api = Build.VERSION_CODES.O)
 public class WorkoutActivity extends AppCompatActivity implements SensorEventListener, StepListener {
 
-    TextView Distance;//, Speed, NumberStops, DistTrav, DistSkritt, DistGallopp, VoltRight, VoltLeft;
+    TextView Distance, Speed;//, NumberStops, DistTrav, DistSkritt, DistGallopp, VoltRight, VoltLeft;
     Button buttonProf;
     private Intent intent;
     private StepDetector simpleStepDetector;
@@ -34,7 +37,10 @@ public class WorkoutActivity extends AppCompatActivity implements SensorEventLis
     private int numSteps;
     private Button BtnStart;
     private int meters;
-    private int speed;
+    private double speed;
+    private long time;
+    private double km;
+    static Instant Start;
 
 
 
@@ -46,8 +52,8 @@ public class WorkoutActivity extends AppCompatActivity implements SensorEventLis
         setContentView(R.layout.workout_activity);
         buttonProf = findViewById(R.id.buttonProfile);
         Distance = findViewById(R.id.textViewDist);
-        /*Speed = findViewById(R.id.textViewSpeed);
-        NumberStops = findViewById(R.id.textViewStopp);
+        Speed = findViewById(R.id.textViewSpeed);
+        /*NumberStops = findViewById(R.id.textViewStopp);
         DistTrav = findViewById(R.id.textViewDistTrav);
         DistSkritt = findViewById(R.id.textViewDistSkritt);
         DistGallopp = findViewById(R.id.textViewDistGallop);
@@ -73,7 +79,8 @@ public class WorkoutActivity extends AppCompatActivity implements SensorEventLis
             public void onClick(View arg0) {
 
                 numSteps = 0;
-
+                Instant start = Instant.now();
+                Start = start;
                 sensorManager.registerListener(WorkoutActivity.this, accel, SensorManager.SENSOR_DELAY_FASTEST);
 
             }
@@ -97,9 +104,29 @@ public class WorkoutActivity extends AppCompatActivity implements SensorEventLis
     @Override
     public void step(long timeNs) {
         numSteps++;
-        meters = (int) (numSteps*0.65);
+        meters = (int) (numSteps*0.55);
+        Instant still = Instant.now();
+        Duration timeElapsed = Duration.between(
+                Start,
+                still
+        );
 
-        Distance.setText(numSteps+ " m");
+        float sec = timeElapsed.toMillis();
+        float minute = timeElapsed.toMinutes();
+        float hour = timeElapsed.toHours();
+        float timeSeconds = (hour*3600) + (minute * 60) + sec;
+
+        km = meters*0.001;
+
+        if(meters > 1000){
+            Distance.setText(km+ " km");
+        }else{
+            Distance.setText(meters+ " m");
+        }
+        float kps = (meters/1000) / (timeSeconds/3600);
+
+       // Speed.setText((int) speed+ " km/h");
+        Speed.setText(kps + " km/h");
     }
 }
 
