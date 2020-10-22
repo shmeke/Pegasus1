@@ -175,20 +175,11 @@
             </TableRow>
         </TableLayout>
 
-
-
-
-
         <Button
-            android:id="@+id/buttonProfile"
+            android:id="@+id/buttonMenu"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="See Profile" />
-        <Button
-            android:id="@+id/buttonStart"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Start this shit" />
+            android:text="Back to Menu" />
     </LinearLayout>
 
 
