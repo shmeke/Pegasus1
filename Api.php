@@ -112,6 +112,23 @@
         }
  
  break; 
+
+ case 'tempworkout':
+    if(isTheseParametersAvailable(array('username', 'accelvalue'))){
+        $username = $_POST['username'];
+        $accelvalue = $_POST['accelvalue'];
+        $date = date('y-m-d');
+        $time = time('H:i:s');
+
+
+                //Insert workout data to database
+                $stmt = $conn->prepare("INSERT INTO tempworkout (username, accelvalue, date, time) VALUES (?, ?, $date, $time)");
+                $stmt->bind_param("ssss", $username, $accelvalue, $date, $time);
+                
+            $stmt->execute();
+            $stmt->close();
+
+    }
  
  default: 
  $response['error'] = true; 
