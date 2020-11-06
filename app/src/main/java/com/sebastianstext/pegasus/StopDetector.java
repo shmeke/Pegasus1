@@ -1,14 +1,13 @@
 package com.sebastianstext.pegasus;
 
-public class StepDetector {
-
+public class StopDetector {
     private static final int ACCEL_RING_SIZE = 50;
     private static final int VEL_RING_SIZE = 10;
 
     // change this threshold according to your sensitivity preferences
-    private static final float STEP_THRESHOLD = 4f;
-    private static final int STEP_DELAY_NS = 100000000;
+    private static final float STOP_THRESHOLD = 10f;
 
+    private static final int STOP_DELAY_NS = 1000000000;
 
     private int accelRingCounter = 0;
     private float[] accelRingX = new float[ACCEL_RING_SIZE];
@@ -16,18 +15,20 @@ public class StepDetector {
     private float[] accelRingZ = new float[ACCEL_RING_SIZE];
     private int velRingCounter = 0;
     private float[] velRing = new float[VEL_RING_SIZE];
-    private long lastStepTimeNs = 0;
+    private float minDrift;
+    private float maxDrift;
+    private long lastStopTimeNs = 0;
     private float oldVelocityEstimate = 0;
+    private float olderVelocityEstimate = 0;
 
+    private StopListener listener;
 
-    private StepListener listener;
-
-    public void registerListener(StepListener listener) {
+    public void registerListener(StopListener listener) {
         this.listener = listener;
+
     }
 
-
-    public void updateAccel(long timeNs, float x, float y, float z) {
+    public void stepCountUpdate(long timeNs, float x, float y, float z) {
         float[] currentAccel = new float[3];
         currentAccel[0] = x;
         currentAccel[1] = y;
@@ -50,21 +51,24 @@ public class StepDetector {
         worldZ[1] = worldZ[1] / normalization_factor;
         worldZ[2] = worldZ[2] / normalization_factor;
 
-        float currentZ = SensorFilter.dot(worldZ, currentAccel) - normalization_factor;
-
+        float currentM = (float) Math.sqrt(worldZ[0]*worldZ[0] + worldZ[1]*worldZ[1] + worldZ[2]*worldZ[2]);
         velRingCounter++;
-        velRing[velRingCounter % VEL_RING_SIZE] = currentZ;
+        velRing[velRingCounter % VEL_RING_SIZE] = currentM;
 
         float velocityEstimate = SensorFilter.sum(velRing);
+        minDrift = (float) (oldVelocityEstimate - 0.01);
+        maxDrift = (float) (oldVelocityEstimate + 0.1);
 
-        if (velocityEstimate > STEP_THRESHOLD && oldVelocityEstimate <= STEP_THRESHOLD
-                && (timeNs - lastStepTimeNs > STEP_DELAY_NS)) {
-            listener.tempWorkout(timeNs, oldVelocityEstimate);
-            lastStepTimeNs = timeNs;
+
+        if(minDrift < velocityEstimate){
+            if (velocityEstimate < STOP_THRESHOLD && timeNs - lastStopTimeNs > STOP_DELAY_NS){
+                listener.onStopCount(currentM);
+                lastStopTimeNs = timeNs;
+
+            }
         }
 
+        olderVelocityEstimate = oldVelocityEstimate;
         oldVelocityEstimate = velocityEstimate;
     }
-
-
 }

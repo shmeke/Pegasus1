@@ -17,11 +17,14 @@
             android:layout_height="wrap_content"
             android:text="See Profile" />
         <Button
-            android:id="@+id/buttonStart"
+            android:id="@+id/buttonWorkouts"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Start workout" />
+            android:text="See workouts" />
+
     </LinearLayout>
+
+
 
 
 </RelativeLayout>

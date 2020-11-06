@@ -12,12 +12,13 @@ import androidx.appcompat.app.AppCompatActivity;
 public class ProfileActivity extends AppCompatActivity {
 
     TextView textViewId, textViewUsername, textViewEmail, textViewGender;
-    Button button;
+    Button buttonStart, buttonSeeWorkouts;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
-        button = findViewById(R.id.buttonWorkout);
+        buttonStart = findViewById(R.id.buttonWorkout);
+        buttonSeeWorkouts = findViewById(R.id.buttonWorkouts);
         //if the user is not logged in
         //starting the login activity
         if (!SharedPrefManager.getInstance(this).isLoggedIn()) {
@@ -51,11 +52,19 @@ public class ProfileActivity extends AppCompatActivity {
             }
         });
 
-        button.setOnClickListener(new View.OnClickListener() {
+        buttonStart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 finish();
                 Intent i = new Intent(ProfileActivity.this, WorkoutActivity.class);
+                startActivity(i);
+            }
+        });
+        buttonSeeWorkouts.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+                Intent i = new Intent(ProfileActivity.this, WorkoutsActivity.class);
                 startActivity(i);
             }
         });

@@ -100,6 +100,11 @@
             android:id="@+id/buttonWorkout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:text="Start workout" />
+        <Button
+            android:id="@+id/buttonWorkouts"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:text="See Workouts" />
         <Button
             android:id="@+id/buttonLogout"

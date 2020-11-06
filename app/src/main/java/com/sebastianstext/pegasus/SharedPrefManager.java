@@ -18,6 +18,9 @@ public class SharedPrefManager {
     private static final String KEY_EMAIL = "keyemail";
     private static final String KEY_GENDER = "keygender";
     private static final String KEY_ID = "keyid";
+    private static final String KEY_SPEED = "keyspeed";
+    private static final String KEY_STOPS = "keystops";
+    private static final String KEY_DIST = "keydist";
 
     private static SharedPrefManager mInstance;
     private static Context mCtx;
@@ -45,6 +48,17 @@ public class SharedPrefManager {
         editor.apply();
     }
 
+    public void workouts(WorkoutsList workoutsList){
+        SharedPreferences sharedPreferences = mCtx.getSharedPreferences(SHARED_PREF_NAME, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString(KEY_USERNAME, workoutsList.getUser());
+        editor.putString(KEY_SPEED, workoutsList.getAvrgspeed());
+        editor.putInt(KEY_DIST, workoutsList.getMeters());
+        editor.putInt(KEY_STOPS, workoutsList.getNmbrstops());
+        editor.apply();
+    }
+
+
     //this method will checker whether user is already logged in or not
     public boolean isLoggedIn() {
         SharedPreferences sharedPreferences = mCtx.getSharedPreferences(SHARED_PREF_NAME, Context.MODE_PRIVATE);
@@ -59,6 +73,16 @@ public class SharedPrefManager {
                 sharedPreferences.getString(KEY_USERNAME, null),
                 sharedPreferences.getString(KEY_EMAIL, null),
                 sharedPreferences.getString(KEY_GENDER, null)
+        );
+    }
+
+    public WorkoutsList getWorkout(){
+        SharedPreferences sharedPreferences = mCtx.getSharedPreferences(SHARED_PREF_NAME, Context.MODE_PRIVATE);
+        return new WorkoutsList(
+                sharedPreferences.getString(KEY_USERNAME, null),
+                sharedPreferences.getInt(KEY_STOPS, -1),
+                sharedPreferences.getInt(KEY_DIST, -1),
+                sharedPreferences.getString(KEY_SPEED, null)
         );
     }
 

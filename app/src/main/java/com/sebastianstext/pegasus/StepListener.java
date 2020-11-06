@@ -1,5 +1,5 @@
 package com.sebastianstext.pegasus;
 
 public interface StepListener {
-    void step(long timeNs);
+    void tempWorkout(long timeNsSend, float velEstSend);
 }

@@ -176,10 +176,10 @@
         </TableLayout>
 
         <Button
-            android:id="@+id/buttonMenu"
+            android:id="@+id/buttonProfile"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Back to Menu" />
+            android:text="Back to profile" />
     </LinearLayout>
 
 
