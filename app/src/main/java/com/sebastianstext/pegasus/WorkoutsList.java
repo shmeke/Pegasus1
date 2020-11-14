@@ -7,11 +7,11 @@ public class WorkoutsList {
     private String avrgspeed;
     private int meters;
 
-    public WorkoutsList(String user, int nmbrstops, int meters, String avrgspeed) {
+    public WorkoutsList(String user, int nmbrstops, String avrgspeed, int meters) {
         this.user = user;
+        this.nmbrstops = nmbrstops;
         this.avrgspeed = avrgspeed;
         this.meters = meters;
-        this.nmbrstops = nmbrstops;
     }
 
     public String getUser(){return user;}

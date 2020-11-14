@@ -78,20 +78,16 @@ public class WorkoutsActivity extends AppCompatActivity {
 
         class GetWorkout extends AsyncTask<Void, Void, String> {
 
-            ProgressBar progressBar;
 
             @Override
             protected void onPreExecute() {
                 super.onPreExecute();
-                progressBar = findViewById(R.id.progressBar);
-                progressBar.setVisibility(View.VISIBLE);
+
             }
 
             @Override
             protected void onPostExecute(String s) {
                 super.onPostExecute(s);
-                progressBar.setVisibility(View.GONE);
-
 
                 try {
                     //converting response to json object
@@ -104,12 +100,12 @@ public class WorkoutsActivity extends AppCompatActivity {
                         //getting the user from the response
                         JSONObject workoutJson = obj.getJSONObject("workout");
 
-                        //creating a new user object
+                        //creating a new workouts object
                         WorkoutsList workoutsList = new WorkoutsList(
                                 workoutJson.getString("user"),
-                                workoutJson.getInt("meters"),
                                 workoutJson.getInt("nmbrstops"),
-                                workoutJson.getString("avrgspeed")
+                                workoutJson.getString("avrgspeed"),
+                                workoutJson.getInt("meters")
                         );
 
                         //storing the user in shared preferences

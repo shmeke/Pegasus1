@@ -52,9 +52,9 @@ public class SharedPrefManager {
         SharedPreferences sharedPreferences = mCtx.getSharedPreferences(SHARED_PREF_NAME, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putString(KEY_USERNAME, workoutsList.getUser());
+        editor.putInt(KEY_STOPS, workoutsList.getNmbrstops());
         editor.putString(KEY_SPEED, workoutsList.getAvrgspeed());
         editor.putInt(KEY_DIST, workoutsList.getMeters());
-        editor.putInt(KEY_STOPS, workoutsList.getNmbrstops());
         editor.apply();
     }
 
@@ -81,8 +81,8 @@ public class SharedPrefManager {
         return new WorkoutsList(
                 sharedPreferences.getString(KEY_USERNAME, null),
                 sharedPreferences.getInt(KEY_STOPS, -1),
-                sharedPreferences.getInt(KEY_DIST, -1),
-                sharedPreferences.getString(KEY_SPEED, null)
+                sharedPreferences.getString(KEY_SPEED, null),
+                sharedPreferences.getInt(KEY_DIST, -1)
         );
     }
 
