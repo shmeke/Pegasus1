@@ -35,7 +35,7 @@ public class WorkoutActivity extends AppCompatActivity implements SensorEventLis
     Sensor rotation;
     private StepDetector simpleStepDetector;
     private rotaionDetector turnDetect;
-    TextView magnet, speed, stop, dist, right;
+    TextView magnet, speed, stop, dist, right, left;
     Button profile, workouts;
     DelayUtil d = new DelayUtil();
     private int numSteps;
@@ -59,6 +59,7 @@ public class WorkoutActivity extends AppCompatActivity implements SensorEventLis
         speed = findViewById(R.id.speed);
         stop = findViewById(R.id.stop);
         right = findViewById(R.id.right);
+        left = findViewById(R.id.left);
         sm = (SensorManager)getSystemService(SENSOR_SERVICE);
         accel = sm.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
         rotation = sm.getDefaultSensor(Sensor.TYPE_ORIENTATION);
@@ -123,7 +124,7 @@ public class WorkoutActivity extends AppCompatActivity implements SensorEventLis
    switch (leftTurn){
         case 20:
             fullLeftVolt++;
-            stop.setText(String.valueOf(fullLeftVolt));
+            left.setText(String.valueOf(fullLeftVolt));
             Instant leftVoltStop = Instant.now();
             Duration leftVolt = Duration.between(startVoltLeft, leftVoltStop);
             leftTurn = 0;
@@ -171,13 +172,13 @@ public class WorkoutActivity extends AppCompatActivity implements SensorEventLis
 
         kps = (km) / (sec * 3600);
 
-       /* String Dist = String.valueOf(meters);
+       String Dist = String.valueOf(meters);
         String Speed = String.valueOf(kps);
-        String Stop = String.valueOf(stopCount);*/
+        String Stop = String.valueOf(stopCount);
 
-        //dist.setText(Dist);
-        //speed.setText(Speed);
-        //stop.setText(Stop);
+        dist.setText(Dist);
+        speed.setText(Speed);
+        stop.setText(Stop);
 
 
     }
